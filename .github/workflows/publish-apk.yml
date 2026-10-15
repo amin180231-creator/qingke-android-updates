@@ -58,3 +58,27 @@ jobs:
               assert uploaded.get("digest") == "sha256:" + digest, "Uploaded asset checksum mismatch"
           request(api + "/repos/" + repo + "/releases/" + str(release["id"]), "PATCH", {"name": "青刻 Android " + tag + "（验证码与更新检查修订）", "body": manifest["notes"]})
           print("Published " + filename + " SHA-256 " + digest)
+
+          page = 1
+          while True:
+              releases = request(api + "/repos/" + repo + "/releases?per_page=100&page=" + str(page))
+              if not releases:
+                  break
+              for old_release in releases:
+                  asset_page = 1
+                  while True:
+                      old_assets = request(api + "/repos/" + repo + "/releases/" + str(old_release["id"]) + "/assets?per_page=100&page=" + str(asset_page))
+                      if not old_assets:
+                          break
+                      for asset in old_assets:
+                          is_apk = asset["name"].lower().endswith((".apk", ".apk.old"))
+                          keep = old_release["id"] == release["id"] and asset["name"] == filename
+                          if is_apk and not keep:
+                              request(api + "/repos/" + repo + "/releases/assets/" + str(asset["id"]), "DELETE")
+                              print("Removed superseded APK asset: " + asset["name"])
+                      if len(old_assets) < 100:
+                          break
+                      asset_page += 1
+              if len(releases) < 100:
+                  break
+              page += 1
