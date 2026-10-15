@@ -1,8 +1,8 @@
 {
   "versionName": "1.1.1",
-  "versionCode": 1000038,
-  "apkFile": "Qingke-Android-v1.1.1-build1000038-release.apk",
-  "releaseTitle": "青刻 Android v1.1.1（日程交互修订）",
-  "notes": "# 青刻 Android v1.1.1（日程交互修订）\n\n- 修复快速滚动学习日程表单时底部面板跟随下滑关闭的问题；可通过返回按钮或系统返回离开编辑页。\n- 时间字段改为小时、分钟滚轮选择，并可清空以保留“时间待定”。\n\n版本名称：1.1.1；内部版本号：1000038。沿用正式签名，可覆盖安装并保留本地数据。\n\n文件：Qingke-Android-v1.1.1-build1000038-release.apk\nSHA-256：04fbc60a15dc17f29b91cd047a8a67001e9fbfefd43f0dbd35fb46c30eaac02d",
-  "sha256": "04fbc60a15dc17f29b91cd047a8a67001e9fbfefd43f0dbd35fb46c30eaac02d"
+  "versionCode": 1000039,
+  "apkFile": "Qingke-Android-v1.1.1-build1000039-release.apk",
+  "releaseTitle": "青刻 Android v1.1.1（时间输入修订）",
+  "notes": "# 青刻 Android v1.1.1（时间输入修订）\n\n- 学习日程的时间字段恢复为手动输入，继续校验 HH:mm 格式；留空时仍表示“时间待定”。\n- 保留快速滚动表单时的编辑面板稳定性修复。\n\n版本名称：1.1.1；内部版本号：1000039。沿用正式签名，可覆盖安装并保留本地数据。\n\n文件：Qingke-Android-v1.1.1-build1000039-release.apk\nSHA-256：e07ea5c909b26522c075ac99b6d082550686c17e8258fb3e5a98fe7b5aa0e599",
+  "sha256": "e07ea5c909b26522c075ac99b6d082550686c17e8258fb3e5a98fe7b5aa0e599"
 }
