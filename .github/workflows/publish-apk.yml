@@ -1,0 +1,60 @@
+name: Publish APK from update manifest
+on:
+  push:
+    branches: [main]
+    paths:
+      - latest.json
+      - '*.apk'
+      - .github/workflows/publish-apk.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate and publish signed APK
+        shell: python
+        env:
+          RELEASE_TOKEN: ${{ github.token }}
+          RELEASE_REPO: ${{ github.repository }}
+          RELEASE_REF: ${{ github.sha }}
+        run: |
+          import base64, hashlib, json, os, re, urllib.request, urllib.error
+          repo = os.environ["RELEASE_REPO"]
+          token = os.environ["RELEASE_TOKEN"]
+          ref = os.environ["RELEASE_REF"]
+          api = "https://api.github.com"
+          def request(url, method="GET", data=None, content_type="application/json"):
+              headers = {"Authorization": "Bearer " + token, "Accept": "application/vnd.github+json", "User-Agent": "Qingke-release-publisher", "Content-Type": content_type}
+              if data is not None and not isinstance(data, bytes):
+                  data = json.dumps(data).encode()
+              with urllib.request.urlopen(urllib.request.Request(url, data=data, headers=headers, method=method), timeout=120) as response:
+                  body = response.read()
+                  return json.loads(body) if body else None
+          content = request(api + "/repos/" + repo + "/contents/latest.json?ref=" + ref)
+          manifest = json.loads(base64.b64decode(content["content"]))
+          version, code = manifest["versionName"], manifest["versionCode"]
+          assert re.fullmatch(r"\d+\.\d+\.\d+", version) and isinstance(code, int) and code > 0
+          filename = "Qingke-Android-v" + version + "-build" + str(code) + "-release.apk"
+          assert manifest["apkFile"] == filename
+          with urllib.request.urlopen("https://raw.githubusercontent.com/" + repo + "/" + ref + "/" + filename, timeout=120) as response:
+              apk = response.read()
+          digest = hashlib.sha256(apk).hexdigest()
+          assert digest == manifest["sha256"].lower(), "APK checksum mismatch"
+          tag = "v" + version
+          try:
+              release = request(api + "/repos/" + repo + "/releases/tags/" + tag)
+          except urllib.error.HTTPError as error:
+              if error.code != 404:
+                  raise
+              release = request(api + "/repos/" + repo + "/releases", "POST", {"tag_name": tag, "name": "青刻 Android " + tag, "body": manifest["notes"], "draft": False, "prerelease": False})
+          assets = request(api + "/repos/" + repo + "/releases/" + str(release["id"]) + "/assets?per_page=100")
+          existing = next((a for a in assets if a["name"] == filename), None)
+          if existing:
+              assert existing.get("digest") == "sha256:" + digest, "Existing asset does not match; refusing to replace it"
+          else:
+              uploaded = request(release["upload_url"].split("{")[0] + "?name=" + filename, "POST", apk, "application/vnd.android.package-archive")
+              assert uploaded.get("digest") == "sha256:" + digest, "Uploaded asset checksum mismatch"
+          request(api + "/repos/" + repo + "/releases/" + str(release["id"]), "PATCH", {"name": "青刻 Android " + tag + "（验证码与更新检查修订）", "body": manifest["notes"]})
+          print("Published " + filename + " SHA-256 " + digest)
