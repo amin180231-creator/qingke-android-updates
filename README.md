@@ -1,15 +1,24 @@
 # 青刻 Android
 
-青刻 Android 由独立开发者维护。本仓库只发布 Android APK 和版本说明，不包含应用源码。
+青刻 Android 由独立开发者维护。本仓库发布 APK、更新清单和版本说明。
 
 ## 下载
 
-在 [Releases](https://github.com/amin180231-creator/qingke-android-updates/releases/latest) 获取最新正式版 APK。
+- [GitHub Releases](https://github.com/amin180231-creator/qingke-android-updates/releases/latest)
+- [GitCode 更新仓库](https://gitcode.com/Maple_One/qingke-android-updates)
+- [GitCode 最新 APK（1.1.1 / 1000036）](https://api.gitcode.com/api/v5/repos/Maple_One/qingke-android-updates/raw/Qingke-Android-v1.1.1-build1000036-release.apk)
 
-## 应用内检查更新
+当前安装包：`Qingke-Android-v1.1.1-build1000036-release.apk`。
 
-应用启动时会自动检查公开 Release；发现较新版本时会提示用户，也可以在应用内的「版本更新」页面手动检查。检查时优先通过 GH-Proxy 获取公开版本信息；代理不可用时回退 GitHub 官方 API。检查只读取公开 Release 信息，不上传设备或账号数据。下载始终跳转到 GitHub 官方发布页，安装由 Android 系统确认。
+## 更新检查
 
-## 安装与升级
+应用启动时自动检查，也可在“版本更新”页手动检查。1000036 起优先读取 GitCode 的 `latest.json`，发现更新后打开对应 APK 下载地址；失败后尝试 GitHub 来源。清单包含版本名称、内部版本号、安装包文件名及更新说明。下载完成后由 Android 系统确认安装。
 
-下载 APK 后按 Android 系统提示安装。覆盖升级需要与已安装版本的签名一致；如果系统提示签名不匹配，请不要继续安装。
+旧版 1.1.1 若只比较版本名称，需要手动覆盖安装一次；1000035 及之后的检查器可识别同名版本的内部版本号。
+
+## 发布同步
+
+每次发布同时提交最新 APK 与 `latest.json`，再从本 GitHub 仓库镜像同步至 GitCode。Git 镜像不会复制 Releases 附件，因此仓库文件中也提供最新 APK。每次替换时删除旧 APK 文件，只保留最新安装包。
+
+覆盖安装使用相同正式签名。版本记录见 CHANGELOG.md。
+
