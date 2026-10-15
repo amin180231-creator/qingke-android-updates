@@ -1,7 +1,8 @@
 {
   "versionName": "1.1.1",
-  "versionCode": 1000037,
-  "apkFile": "Qingke-Android-v1.1.1-build1000037-release.apk",
-  "notes": "# 青刻 Android v1.1.1（学习日程与材质修订）\n\n- 修复新学期课表导入后，学习日程未显示课程的问题；尚未校准时会引导填写当前教学周。\n- 优化新建日程编辑页，完整展开面板，减少表单滚动与面板拖动之间的手势冲突。\n- 新安装默认开启 Dock 高级动画材质；已保存的手动选择会保留。\n- 更新检查遇到落后的镜像清单时继续查询后续来源。\n\n版本名称：1.1.1；内部版本号：1000037。沿用正式签名，可覆盖安装并保留本地数据。\n\n文件：Qingke-Android-v1.1.1-build1000037-release.apk\nSHA-256：98505727897a9cdf7f8d12f12daad0c84127820ed452af350ca3502411f24f51",
-  "sha256": "98505727897a9cdf7f8d12f12daad0c84127820ed452af350ca3502411f24f51"
+  "versionCode": 1000038,
+  "apkFile": "Qingke-Android-v1.1.1-build1000038-release.apk",
+  "releaseTitle": "青刻 Android v1.1.1（日程交互修订）",
+  "notes": "# 青刻 Android v1.1.1（日程交互修订）\n\n- 修复快速滚动学习日程表单时底部面板跟随下滑关闭的问题；可通过返回按钮或系统返回离开编辑页。\n- 时间字段改为小时、分钟滚轮选择，并可清空以保留“时间待定”。\n\n版本名称：1.1.1；内部版本号：1000038。沿用正式签名，可覆盖安装并保留本地数据。\n\n文件：Qingke-Android-v1.1.1-build1000038-release.apk\nSHA-256：04fbc60a15dc17f29b91cd047a8a67001e9fbfefd43f0dbd35fb46c30eaac02d",
+  "sha256": "04fbc60a15dc17f29b91cd047a8a67001e9fbfefd43f0dbd35fb46c30eaac02d"
 }
